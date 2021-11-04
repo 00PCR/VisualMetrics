@@ -47,46 +47,62 @@ savePaths = [savePathA, savePathB, savePathC, savePathD, savePathE, savePathF, s
 x = 256 #the new dimensions of the image
 newSize = (x, x)
 
+#two things to solve a pesky issue where some paths don't work...even when the image exists
+brokenPaths = []
+def write_to_csv(paths, savePath):
+      with open(savePath, 'w', newline='') as csvfile:
+         writer = csv.writer(csvfile)
+         
+         for i in range(len(paths)):
+             writer.writerow([paths[i]])
+
 for i in range(len(pathNames)):
     print("Beginning a new batch")
     with open(pathNames[i], "r") as csvFile:
         csv_reader = csv.reader(csvFile)
         
         for line in csv_reader:
+            try:
            
-            fileName = line[0]
-            image = cv2.imread(fileName)
-            
-            image = cv2.resize(image, newSize, interpolation=cv2.INTER_CUBIC)
-            imgLAB = cv2.cvtColor(image, cv2.COLOR_BGR2LAB )
-            
-            
-            imgL = imgLAB[:,:,0]
-            
-            newMean = 128
-            newStdev = 32
-            #mean = np.mean(imgL, axis=None)
-            normL = imgL - np.mean(imgL) / np.std(imgL)*newStdev+newMean
-    
-    
-            j, = np.where(normL.ravel()<0) 
-            normL = normL.ravel()
-            normL[j] = 0
-            
-            j = np.where(normL.ravel()>255)
-            normL = normL.ravel()
-            normL[j] = 255
-            
-            normL = np.reshape(normL, newSize)
-            
-            
-            
-            imgLAB[:,:,0] = normL
-            
-            final = cv2.cvtColor(imgLAB, cv2.COLOR_LAB2BGR )
-    
-    
-            #saving the adjusted image
-            basename = os.path.basename(fileName)
-            cv2.imwrite(os.path.join(savePaths[i]+ basename), final)
+                fileName = line[0]
+                image = cv2.imread(fileName)
+                
+                image = cv2.resize(image, newSize, interpolation=cv2.INTER_CUBIC)
+                imgLAB = cv2.cvtColor(image, cv2.COLOR_BGR2LAB )
+                
+                
+                imgL = imgLAB[:,:,0]
+                
+                newMean = 128
+                newStdev = 32
+                #mean = np.mean(imgL, axis=None)
+                normL = imgL - np.mean(imgL) / np.std(imgL)*newStdev+newMean
+        
+        
+                j, = np.where(normL.ravel()<0) 
+                normL = normL.ravel()
+                normL[j] = 0
+                
+                j = np.where(normL.ravel()>255)
+                normL = normL.ravel()
+                normL[j] = 255
+                
+                normL = np.reshape(normL, newSize)
+                
+                
+                
+                imgLAB[:,:,0] = normL
+                
+                final = cv2.cvtColor(imgLAB, cv2.COLOR_LAB2BGR )
+        
+        
+                #saving the adjusted image
+                basename = os.path.basename(fileName)
+                cv2.imwrite(os.path.join(savePaths[i]+ basename), final)
+                
+            except:
+                fileName = line[0]
+                brokenPaths.append(fileName[i])
+                
+write_to_csv(brokenPaths, "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/BrokenPaths.csv")
 
