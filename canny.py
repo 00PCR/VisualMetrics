@@ -15,18 +15,25 @@ def edges(filename):
     gray = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)
     #blurred = cv2.GaussianBlur(gray, (5, 5), 0) #I assume if we want maximum edges, we'd want to exclude this
     blurred = gray
-    wide = cv2.Canny(blurred, 10, 200)
+   # wide = cv2.Canny(blurred, 10, 200)
     #two other possible options -- depends on how many edges we want to detect
-    #mid = cv2.Canny(blurred, 30, 150)
-    #tight = cv2.Canny(blurred, 240, 250)
-    edges = np.count_nonzero(wide == 255)
-    #an ultimately unnecessary two linesline
-    #pixels = gray.shape[0]*gray.shape[0] #gets the total number of pixels. It should be constant but ah , still good to do
-    #print(edges/pixels*100)
+    mid = cv2.Canny(blurred, 30, 150)
+   # tight = cv2.Canny(blurred, 240, 250)
+# =============================================================================
+#     cv2.imshow("a", tight)
+#     cv2.waitKey(0)
+#     cv2.imshow("b", mid)
+#     cv2.waitKey(0)
+#     cv2.imshow("c", wide)
+#     cv2.waitKey(0)
+# =============================================================================
+    for i in range(4):
+        cv2.waitKey(1)
+        cv2.destroyAllWindows()
+    
+    
+    edges = np.count_nonzero(mid == 255)
+   
     return edges
 
-# =============================================================================
-# edge = edges(filename)
-# print(edge)
-# 
-# =============================================================================
+

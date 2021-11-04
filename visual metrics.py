@@ -23,12 +23,12 @@ import AlexNet2 #AlexNet2.Alexnet(root, outpath, file_names): root = where the i
                 
                 
                 
-paths = "/Users/peterriley/Desktop/features/paths.csv" #this is the plain and simple file paths
-saveName = "/Users/peterriley/Desktop/features/Visual Parameters.csv"
+paths = "/Users/peterriley/Desktop/ABTest/Adjustedpaths.csv" #this is the plain and simple file paths
+saveName = "/Users/peterriley/Desktop/ABTest/Visual Parameters100.csv"
 
 #two things critical to make AlexNet function properly
-root = "/Users/peterriley/Desktop/Background/" #where the images are located
-outpath = "/Users/peterriley/Desktop/features/" #where the npy file is to be saved
+root = "/Users/peterriley/Desktop/ABTest/Adjusted/" #where the images are located
+outpath = "/Users/peterriley/Desktop/ABTest/" #where the npy file is to be saved
 
 
 
@@ -59,6 +59,7 @@ with open(paths, "r") as csvFile:
             size = filesize.filesize(fileName)
             AB = ABentropy.ABentropy(fileName)
             AlexE = AlexNet2.AlexEntropy(i, data)
+            
 
             
             
