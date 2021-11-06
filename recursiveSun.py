@@ -22,8 +22,11 @@ import csv
 #remove when actually running the real code
 #remove when actually running the real code
 #remove when actually running the real code
-filePath = "/Users/peterriley/Desktop/AA/**/*.png"
-savePath = "/Users/peterriley/Desktop/ABTest/AIpaths.csv"
+#filePath = "/Users/peterriley/Desktop/AA/**/*.png"
+
+#filePath = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/AdjustedImages/**/*.jpg"
+filePath = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/AdjustedImages/G/**/*.jpg"
+savePath = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/G/G.csv"
 
 # Returns a list of names in list files.
 #print("Using glob.glob()")
