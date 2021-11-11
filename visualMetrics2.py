@@ -68,17 +68,17 @@ npy =   [Anpy, Bnpy, Cnpy, Dnpy, Enpy, Fnpy, Gnpy]
 #each of the many fields
 fields = ["path", "edge density", "file size (bytes)", "AB entropy", "Alexnet entropy", "Gist entropy"]
 
-with open(saveName, "w") as new_file:
-            writer = csv.writer(new_file)
-            
-            writer.writerow(fields)
-            
 # avoids module/import issues by having this part of the main script            
 def AlexEntropy(i, data):
     data = data[i][:]
     data = np.full_like(data, 0.0001) + data
     e = entropy(data, base=2)
     return e
+
+with open(saveName, "w") as new_file:
+            writer = csv.writer(new_file)
+            
+            writer.writerow(fields)
             
 for j in range(len(paths)):
     print("A new batch has begun...yay!")
