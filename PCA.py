@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Nov  9 20:49:19 2021
+
+@author: peterriley
+"""
+#something may be wrong with the measures of visual informatino...but hey, at least this code can be applied to whatever version of the matrix is used
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set()
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import os
+from shutil import copyfile
+import csv
+
+#several weird things to determine
+# One --> alexnet entropies (alot are zero. Perhaps re-calculate metrics with this adjusted)
+# Two --> why do high and low info levels seems to be switched?
+# Three --> close to all black images...
+
+
+#csv file of visual metrics
+file = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/Visual Metrics.csv"
+#file = "/Users/peterriley/Desktop/features/testing.csv"
+
+#save paths for the top and bottom ten percent of images
+savePathRich = "/Users/peterriley/Desktop/features/VR2/"
+savePathPoor = "/Users/peterriley/Desktop/features/VP2/"
+
+#save paths for CSV files (path & first PCA)
+VH = "/Users/peterriley/Desktop/features/VRich.csv"
+VL = "/Users/peterriley/Desktop/features/VRich.csv"
+
+df=pd.read_csv(file, sep=',',header=None) # reads in the csv file as panda dataframe
+temp = df.to_numpy() #converts the dataframe into a numpy array
+temp2 = np.delete(temp, 0, axis = 0) #returns an array that has removed the header (probably an easier way to do this but this works)
+final = np.delete(temp2, 0, axis=1) #create a version of the array that has the paths removed for PCA analysis
+
+#use these two lines if you want to compute PCA without the gist and alexnet (for testing purposes)
+# =============================================================================
+# final = final = np.delete(final, 4, axis=1)
+# final = final = np.delete(final, 3, axis=1)
+# =============================================================================
+
+final = StandardScaler().fit_transform(final) #normalize the data so we don't get anything wonky
+
+paths = temp2[:,0] #pulls just the paths (for indexing later)
+
+#get the variance matrix and plot it (note: 0 for number of components is actually the first component)
+pca = PCA().fit(final)
+plt.plot(np.cumsum(pca.explained_variance_ratio_))
+plt.xlabel('number of components')
+plt.ylabel('cumulative explained variance');
+variance_matrix = pca.explained_variance_ratio_
+print('Explained variation per principal component: {}'.format(pca.explained_variance_ratio_))
+
+#get the first pca for all of the images
+pca = PCA(n_components=1)
+pca.fit(final)
+final_pca = pca.transform(final)
+print("original shape:   ", final.shape)
+print("transformed shape:", final_pca.shape)
+
+
+final_pca = np.squeeze(final_pca) #avoids funny business. This makes a 1D matrix
+
+#paths and 1st pca merged together
+c = np.column_stack((paths, final_pca))
+
+#determine where the top and bottom decile lay
+#currently set super extreme so I only have to look at a couple images
+x = 0.0001 #in case you want to change what percentile you're extracting
+top = np.quantile(final_pca, 1-x)
+bottom = np.quantile(final_pca, x)
+
+#extract the top 10% of images
+high = np.where(c[:,1]>top)
+Vrich  = c[high]
+# extract the bottom 10% of images
+low = np.where(c[:,1]<bottom)
+Vpoor = c[low]
+
+#make a copy of the BOTTOM 10% of images in a new folder
+for i in range(len(Vpoor)):
+    basename = os.path.basename(Vpoor[i,0])
+    copyfile(Vpoor[i,0], savePathPoor+basename)
+
+#make a copy of the TOP 10% of images in a new folder
+for i in range(len(Vrich)):
+    basename = os.path.basename(Vrich[i,0])
+    copyfile(Vrich[i,0], savePathRich+basename)
+
+
+#save the high and low paths to two seperate csv files for good measure
+def write_to_csv(paths, savePath):
+      with open(savePath, 'w', newline='') as csvfile:
+         fields = ["path", "PCA1"]
+         writer = csv.writer(csvfile)
+         writer.writerow(fields)
+         for i in range(len(paths)):
+             basename = os.path.basename(paths[i,0])
+             writer.writerow([savePath+basename, paths[i,1]])
+             
+#CHANEG AT THE END...         
+#save high paths
+write_to_csv(Vrich, VH)
+#save low paths
+write_to_csv(Vpoor, VL)
+
+
+
+
