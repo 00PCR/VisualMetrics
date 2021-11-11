@@ -21,6 +21,8 @@ import csv
 # Two --> why do high and low info levels seems to be switched?
 # Three --> close to all black images...
 
+#Sets the top and bottom fraction of images isolated. (currently set low so I have less to work with)
+x = 0.0001 
 
 #csv file of visual metrics
 file = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/Visual Metrics.csv"
@@ -39,10 +41,10 @@ temp = df.to_numpy() #converts the dataframe into a numpy array
 temp2 = np.delete(temp, 0, axis = 0) #returns an array that has removed the header (probably an easier way to do this but this works)
 final = np.delete(temp2, 0, axis=1) #create a version of the array that has the paths removed for PCA analysis
 
-#use these two lines if you want to compute PCA without the gist and alexnet (for testing purposes)
+#use these to remove features to see what the PCA is with a subset of features (for testing purposes)
 # =============================================================================
-# final = final = np.delete(final, 4, axis=1)
 # final = final = np.delete(final, 3, axis=1)
+# final = final = np.delete(final, 2, axis=1)
 # =============================================================================
 
 final = StandardScaler().fit_transform(final) #normalize the data so we don't get anything wonky
@@ -72,7 +74,7 @@ c = np.column_stack((paths, final_pca))
 
 #determine where the top and bottom decile lay
 #currently set super extreme so I only have to look at a couple images
-x = 0.0001 #in case you want to change what percentile you're extracting
+
 top = np.quantile(final_pca, 1-x)
 bottom = np.quantile(final_pca, x)
 
