@@ -20,7 +20,7 @@ def ABentropy(filename):
     
     AB_frame = img[:, :, 1:3]
     
-    counts, axis1, axis2 = np.histogram2d(AB_frame[:, :, 0].ravel(), AB_frame[:, :, 1].ravel(), bins =[100, 100])
+    counts, axis1, axis2 = np.histogram2d(AB_frame[:, :, 0].ravel(), AB_frame[:, :, 1].ravel(), bins =[10, 10])
    
     
     #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.entropy.html
