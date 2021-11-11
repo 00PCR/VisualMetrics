@@ -27,11 +27,7 @@ def edges(filename):
 #     cv2.imshow("c", wide)
 #     cv2.waitKey(0)
 # =============================================================================
-    for i in range(4):
-        cv2.waitKey(1)
-        cv2.destroyAllWindows()
-    
-    
+
     edges = np.count_nonzero(mid == 255)
    
     return edges
