@@ -20,7 +20,8 @@ import filesize #filesize.filesize(fileName) will return the number of bytes the
 import ABentropy #ABentropy.ABentropy(fileName) will return the AB entropy
 
 #functionality changed after I already computed the activation energies
-import AlexNet2 #AlexNet2.Alexnet(root, outpath, file_names): root = where the images are saved, outpath is where the npy file is saved. file-names is the path.csv file
+# no longer need to import this (done in a completely previous step)
+#import AlexNet2 #AlexNet2.Alexnet(root, outpath, file_names): root = where the images are saved, outpath is where the npy file is saved. file-names is the path.csv file
                 #second function" AlexNet2.AlexEntropy(i, data). Returns entropy Data: the npy file, i: index
 
 #the final product!!!
@@ -72,6 +73,13 @@ with open(saveName, "w") as new_file:
             
             writer.writerow(fields)
             
+# avoids module/import issues by having this part of the main script            
+def AlexEntropy(i, data):
+    data = data[i][:]
+    data = np.full_like(data, 0.0001) + data
+    e = entropy(data, base=2)
+    return e
+            
 for j in range(len(paths)):
     print("A new batch has begun...yay!")
     #load in the mat file
@@ -93,7 +101,8 @@ for j in range(len(paths)):
                 edge = canny.edges(fileName)
                 size = filesize.filesize(fileName)
                 AB = ABentropy.ABentropy(fileName)
-                AlexE = AlexNet2.AlexEntropy(i, data)
+                #AlexE = AlexNet2.AlexEntropy(i, data)
+                AlexE = AlexEntropy(i, data)
                 
                 gistEnt = entropy(gist[:,i], base = 2)
         
