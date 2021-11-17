@@ -51,22 +51,24 @@ Fgist = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSa
 Ggist = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/G/Ggist.mat"
 
 
-#paths to all of the Alexnet npy files
-Anpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/A/features.npy"
-Bnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/B/features.npy"
-Cnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/C/features.npy"
-Dnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/D/features.npy"
-Enpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/E/features.npy"
-Fnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/F/features.npy"
-Gnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/G/features.npy"
-
+# =============================================================================
+# #paths to all of the Alexnet npy files
+# Anpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/A/features.npy"
+# Bnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/B/features.npy"
+# Cnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/C/features.npy"
+# Dnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/D/features.npy"
+# Enpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/E/features.npy"
+# Fnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/F/features.npy"
+# Gnpy = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/SecretSauce/G/features.npy"
+# 
+# =============================================================================
 #converting each of these into their resespective lists
 paths = [Apath, Bpath, Cpath, Dpath, Epath, Fpath, Gpath]
 gists = [Agist, Bgist, Cgist, Dgist, Egist, Fgist, Ggist]
-npy =   [Anpy, Bnpy, Cnpy, Dnpy, Enpy, Fnpy, Gnpy]
+# npy =   [Anpy, Bnpy, Cnpy, Dnpy, Enpy, Fnpy, Gnpy]
 
 #each of the many fields
-fields = ["path", "edge density", "file size (bytes)", "AB entropy", "Alexnet entropy", "Gist entropy"]
+fields = ["path", "edge density", "file size (bytes)", "AB entropy", "Gist entropy"] #no more alexNet
 
 # avoids module/import issues by having this part of the main script            
 def AlexEntropy(i, data):
@@ -86,8 +88,8 @@ for j in range(len(paths)):
     mat = scipy.io.loadmat(gists[j])
     gist = mat["Features"]
     #load in the npy file
-    zz = npy[j]
-    data = np.load(zz)
+    #zz = npy[j]
+    #data = np.load(zz)
     with open(paths[j], "r") as csvFile:
         csv_reader = csv.reader(csvFile)
         
@@ -102,10 +104,10 @@ for j in range(len(paths)):
                 size = filesize.filesize(fileName)
                 AB = ABentropy.ABentropy(fileName)
                 #AlexE = AlexNet2.AlexEntropy(i, data)
-                AlexE = AlexEntropy(i, data)
+                #AlexE = AlexEntropy(i, data)
                 
                 gistEnt = entropy(gist[:,i], base = 2)
         
             
-                writer.writerow([line[0], edge, size, AB, AlexE, gistEnt])
+                writer.writerow([line[0], edge, size, AB, gistEnt])
                 
