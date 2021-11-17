@@ -14,30 +14,6 @@ from scipy.stats import entropy
 #filename = '/Users/peterriley/Desktop/ABTest/Adjusted/adjusted z winter.jpg'
 
 
-def ABentropy2(filename):
-    image= cv2.imread(filename)
-    img = cv2.cvtColor(image, cv2.COLOR_BGR2LAB )
-    
-    AB_frame = img[:, :, 1:3]
-    
-    counts, axis1, axis2 = np.histogram2d(AB_frame[:, :, 0].ravel(), AB_frame[:, :, 1].ravel(), bins =[10, 10])
-   
-    
-    #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.entropy.html
-    
-   
-   
-    counts= counts.flatten()
-    
-    #adds a little bit to each value to avoid wonkyness of calculating entropy with a lot of 0s
-    counts = np.full_like(counts, 0.0001) + counts
-    
-    #zeros = np.count_nonzero(counts == 0.0001)
-    e = entropy(counts, base=2)
-    
-    return e
-
-
 def ABentropy(filename, binSize):
     image= cv2.imread(filename)
     img = cv2.cvtColor(image, cv2.COLOR_BGR2LAB )
@@ -49,7 +25,7 @@ def ABentropy(filename, binSize):
     
     #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.entropy.html
     
-    print(len(counts))
+    
    
     counts= counts.flatten()
     
@@ -60,6 +36,8 @@ def ABentropy(filename, binSize):
     e = entropy(counts, base=2)
     
     return e
+
+# this is code to test different bin sizes
 # =============================================================================
 # 
 # import csv
