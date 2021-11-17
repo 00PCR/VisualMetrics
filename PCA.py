@@ -22,19 +22,19 @@ import csv
 # Three --> close to all black images...
 
 #Sets the top and bottom fraction of images isolated. (currently set low so I have less to work with)
-x = 0.0001 
+x = 0.00001 
 
 #csv file of visual metrics
 file = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/Visual Metrics.csv"
 #file = "/Users/peterriley/Desktop/features/testing.csv"
 
 #save paths for the top and bottom ten percent of images
-savePathRich = "/Users/peterriley/Desktop/features/VR2/"
-savePathPoor = "/Users/peterriley/Desktop/features/VP2/"
+savePathRich = "/Users/peterriley/Desktop/features/VisualRich/"
+savePathPoor = "/Users/peterriley/Desktop/features/VisualPoor/"
 
 #save paths for CSV files (path & first PCA)
-VH = "/Users/peterriley/Desktop/features/VRich.csv"
-VL = "/Users/peterriley/Desktop/features/VRich.csv"
+VHcsv = "/Users/peterriley/Desktop/features/VRich.csv"
+VLcsv = "/Users/peterriley/Desktop/features/VPoor.csv"
 
 df=pd.read_csv(file, sep=',',header=None) # reads in the csv file as panda dataframe
 temp = df.to_numpy() #converts the dataframe into a numpy array
@@ -97,20 +97,20 @@ for i in range(len(Vrich)):
 
 
 #save the high and low paths to two seperate csv files for good measure
-def write_to_csv(paths, savePath):
+def write_to_csv(paths, savePath, split):
       with open(savePath, 'w', newline='') as csvfile:
          fields = ["path", "PCA1"]
          writer = csv.writer(csvfile)
          writer.writerow(fields)
          for i in range(len(paths)):
              basename = os.path.basename(paths[i,0])
-             writer.writerow([savePath+basename, paths[i,1]])
+             writer.writerow([split+basename, paths[i,1]])
              
 #CHANEG AT THE END...         
 #save high paths
-write_to_csv(Vrich, VH)
+write_to_csv(Vrich, VHcsv, savePathRich)
 #save low paths
-write_to_csv(Vpoor, VL)
+write_to_csv(Vpoor, VLcsv, savePathPoor)
 
 
 
