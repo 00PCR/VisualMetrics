@@ -102,7 +102,7 @@ for i in range(len(pathNames)):
                 
             except:
                 fileName = line[0]
-                brokenPaths.append(fileName[i])
+                brokenPaths.append(fileName)
                 
 write_to_csv(brokenPaths, "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/BrokenPaths.csv")
 
