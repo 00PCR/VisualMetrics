@@ -102,7 +102,7 @@ for j in range(len(paths)):
                
                 edge = canny.edges(fileName)
                 size = filesize.filesize(fileName)
-                AB = ABentropy.ABentropy(fileName)
+                AB = ABentropy.ABentropy(fileName, 4)
                 #AlexE = AlexNet2.AlexEntropy(i, data)
                 #AlexE = AlexEntropy(i, data)
                 
