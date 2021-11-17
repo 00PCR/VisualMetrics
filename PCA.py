@@ -22,7 +22,7 @@ import csv
 # Three --> close to all black images...
 
 #Sets the top and bottom fraction of images isolated. (currently set low so I have less to work with)
-x = 0.00001 
+x = 0.0001 
 
 #csv file of visual metrics
 file = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/Visual Metrics.csv"
