@@ -44,6 +44,8 @@ savePathG = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/Adju
 pathNames = [A, B, C, D, E, F, G]
 savePaths = [savePathA, savePathB, savePathC, savePathD, savePathE, savePathF, savePathG]
 
+brokenPathsCsv = "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/BrokenPaths.csv"
+
 x = 256 #the new dimensions of the image
 newSize = (x, x)
 
@@ -75,20 +77,28 @@ for i in range(len(pathNames)):
                 
                 newMean = 128
                 newStdev = 32
-                #mean = np.mean(imgL, axis=None)
-                normL = imgL - np.mean(imgL) / np.std(imgL)*newStdev+newMean
-        
-        
-                j, = np.where(normL.ravel()<0) 
-                normL = normL.ravel()
-                normL[j] = 0
                 
-                j = np.where(normL.ravel()>255)
-                normL = normL.ravel()
-                normL[j] = 255
-                
-                normL = np.reshape(normL, newSize)
-                
+                normL = (imgL - np.mean(imgL)) / np.std(imgL)*newStdev+newMean
+
+                normL[normL<0] = 0
+                normL[normL>255] = 255
+
+
+# =============================================================================
+#                 normL = imgL - np.mean(imgL) / np.std(imgL)*newStdev+newMean
+#         
+#         
+#                 j, = np.where(normL.ravel()<0) 
+#                 normL = normL.ravel()
+#                 normL[j] = 0
+#                 
+#                 j = np.where(normL.ravel()>255)
+#                 normL = normL.ravel()
+#                 normL[j] = 255
+#                 
+#                 normL = np.reshape(normL, newSize)
+#                 
+# =============================================================================
                 
                 
                 imgLAB[:,:,0] = normL
@@ -104,5 +114,5 @@ for i in range(len(pathNames)):
                 fileName = line[0]
                 brokenPaths.append(fileName)
                 
-write_to_csv(brokenPaths, "/Volumes/etna/Scholarship/Michelle Greene/Students/Peter Riley/BrokenPaths.csv")
+write_to_csv(brokenPaths, brokenPathsCsv )
 
