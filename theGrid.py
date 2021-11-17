@@ -117,7 +117,7 @@ def endProduct(images):
     return final
 
 
-images, key = imageSelect(targetImages[1])
+images, key = imageSelect(targetImages[0])
 print("THE KEY IS", key)
 
 #the actual code
